@@ -5,7 +5,7 @@ o['app_id'] = ''
 o['key']=''
 o['secret']=''
 
-#print repr(o)
+assert len(o['app_id']), "edit values before running..."
 
 pickle.dump( o, open( "server.p", "wb" ) )
 

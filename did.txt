@@ -11,6 +11,7 @@ usrmod -s /sbin/nologin pi
 
 sudo apt-get install git screen python-pip build-essential
 sudo apt-get install  libssl-dev libffi-dev python-dev
-
-
 sudo pip install PySocks idna cryptography
+
+sudo apt-get remove python-openssl
+sudo pip install pyOpenSSL

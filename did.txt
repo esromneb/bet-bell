@@ -1,0 +1,16 @@
+
+
+sudo useradd -m nameee -G sudo
+
+
+nano etc shadow put a * between ::  for pi entry
+usrmod -s /sbin/nologin pi
+
+
+
+
+sudo apt-get install git screen python-pip build-essential
+sudo apt-get install  libssl-dev libffi-dev python-dev
+
+
+sudo pip install PySocks idna cryptography

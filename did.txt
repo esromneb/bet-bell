@@ -15,3 +15,7 @@ sudo pip install PySocks idna cryptography
 
 sudo apt-get remove python-openssl
 sudo pip install pyOpenSSL
+
+
+##################################################################################################################
+http://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up

@@ -395,8 +395,15 @@ class Pusher
         ksort($params);
 
         $string_to_sign = "$request_method\n".$request_path."\n".self::array_implode('=', '&', $params);
-
+        print "Signing\n";
+        print "\n\n";
+        print "$string_to_sign";
+        print "\n";
+        print "done sign";
         $auth_signature = hash_hmac('sha256', $string_to_sign, $auth_secret, false);
+        // print "";
+        // print "";
+        // print $auth_signature;
 
         $params['auth_signature'] = $auth_signature;
         ksort($params);

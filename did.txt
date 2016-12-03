@@ -17,5 +17,23 @@ sudo apt-get remove python-openssl
 sudo pip install pyOpenSSL
 
 
+
+Libs
+#############################################################################
+https://pypi.python.org/pypi/pusherclient/0.3.0
+
+
+
+
+
+
+
+
+
+Related
 ##################################################################################################################
 http://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up
+https://wiki.centos.org/HowTos/Network/SecuringSSH
+http://raspberrypi.stackexchange.com/questions/6957/how-to-disable-raspberry-pi-power-management
+https://www.cyberciti.biz/faq/linux-delete-user-password/
+http://www.makeuseof.com/tag/securing-raspberry-pi-passwords-firewalls/

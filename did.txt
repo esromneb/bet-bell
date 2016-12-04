@@ -21,6 +21,8 @@ sudo pip install pyOpenSSL
 Libs
 #############################################################################
 https://pypi.python.org/pypi/pusherclient/0.3.0
+https://packagist.org/packages/pusher/pusher-php-server
+https://raw.githubusercontent.com/pusher/pusher-http-php/master/lib/Pusher.php
 
 
 

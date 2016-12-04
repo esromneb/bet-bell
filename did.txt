@@ -37,3 +37,8 @@ https://wiki.centos.org/HowTos/Network/SecuringSSH
 http://raspberrypi.stackexchange.com/questions/6957/how-to-disable-raspberry-pi-power-management
 https://www.cyberciti.biz/faq/linux-delete-user-password/
 http://www.makeuseof.com/tag/securing-raspberry-pi-passwords-firewalls/
+=======
+# probably optional
+sudo apt-get install nodejs npm
+sudo npm install request
+

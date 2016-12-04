@@ -393,18 +393,12 @@ class Pusher
 
         $params = array_merge($params, $query_params);
         ksort($params);
+        print time()."\n\n";
 
         $string_to_sign = "$request_method\n".$request_path."\n".self::array_implode('=', '&', $params);
-        print "Signing\n";
-        print "\n\n";
-        print "$string_to_sign";
-        print "\n";
-        print "done sign";
-        $auth_signature = hash_hmac('sha256', $string_to_sign, $auth_secret, false);
-        // print "";
-        // print "";
-        // print $auth_signature;
 
+        $auth_signature = hash_hmac('sha256', $string_to_sign, $auth_secret, false);
+	
         $params['auth_signature'] = $auth_signature;
         ksort($params);
 
@@ -434,7 +428,9 @@ class Pusher
             if (is_array($val)) {
                 $val = implode(',', $val);
             }
+            //print $string."\n\n";
             $string[] = "{$key}{$glue}{$val}";
+            //print $string."\n\n";
         }
 
         return implode($separator, $string);
@@ -484,6 +480,7 @@ class Pusher
         }
 
         $post_value = json_encode($post_params);
+//print $post_value."\n\n\n";
 
         $query_params['body_md5'] = md5($post_value);
 

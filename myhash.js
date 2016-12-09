@@ -528,20 +528,45 @@ function epoc()
   return epoc_seconds;
 }
 
-function build_auth_query_string($auth_key, $auth_secret, $request_method, $request_path)
+function build_auth_query_string($auth_key, $auth_secret, $request_method, $request_path, $query_params)
 {
-    $query_params = Array();
+    
     $auth_version = '1.0';
-    $params = Array();
+    $params = {};
     $params['auth_key'] = $auth_key;
     $params['auth_timestamp'] = epoc();
     $params['auth_version'] = $auth_version;
+    $params['body_md5'] = $query_params['body_md5'];
 
-    $params = $params.concat($query_params)
+    var keys = Object.keys($params);
+
+    $s = ''
+    $implode = '';
+    for (k in $params)
+    {
+        v = $params[k];
+        $implode = $implode + $s + k + '=' + v;
+        // console.log(v);
+        $s='&';
+
+    }
+        console.log('implode'+$implode);
+
+    // console.log(JSON.stringify($params));
+    // console.log(JSON.stringify($query_params));
+    // $params = $params.concat($query_params)
     // $params = array_merge($params, $query_params);
-    ksort($params);
+    //$params = ksort($params);
+    // ksort($params);
 
-    $string_to_sign = "$request_method\n"+$request_path+"\n"+array_implode('=', '&', $params);
+//    $implode = "auth_key=" + $params['auth_key'] + '&' + $params['auth_timestamp'] + '&' + $params['auth_version'] + '&' + $params['body_md5'];
+
+
+
+    $string_to_sign = $request_method+"\n"+$request_path+"\n"+$implode;
+
+    console.log('string_to_sign'+$string_to_sign+'\n\n');
+    console.log('signing:'+tob64($string_to_sign));
 
     //$auth_signature = hash_hmac('sha256', $string_to_sign, $auth_secret, false);
     $auth_signature = myhmac($string_to_sign, $auth_secret);

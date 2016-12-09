@@ -440,6 +440,11 @@ function build_auth_query_string($auth_key, $auth_secret, $request_method, $requ
     return $auth_query_string;
 }
 
+function ddn_domain()
+{
+    return "https://api.pusherapp.com:443";
+}
+
 
 function trigger($channels, $event, $data)
 {
@@ -464,23 +469,23 @@ function trigger($channels, $event, $data)
         console.log('Failed to perform json_encode on the the provided data: '+$data);
     }
 
-    $post_params = Array();
-    $post_params['name'] = $event;
-    $post_params['data'] = $data_encoded;
-    $post_params['channels'] = $channels;
+    // $post_params = Array();
+    // $post_params['name'] = $event;
+    // $post_params['data'] = $data_encoded;
+    // $post_params['channels'] = $channels;
 
     // if ($socket_id !== null) {
     //     $post_params['socket_id'] = $socket_id;
     // }
 
-    $post_value = JSON.stringify($post_params);
+    // $post_value = JSON.stringify($post_params);
 // print $post_value."\n\n\n";
 
-    $query_params['body_md5'] = md5($post_value);
+    $query_params['body_md5'] = md5($data_encoded);
 
-    console.log("got md5 of: " + $query_params['body_md5']);
+    //console.log("got md5 of: " + $query_params['body_md5']);
 
-    // $ch = $this->create_curl($this->ddn_domain(), $s_url, 'POST', $query_params);
+    //$ch = create_curl(ddn_domain(), $s_url, 'POST', $query_params);
 
     // $this->log('trigger POST: '.$post_value);
 
@@ -495,6 +500,18 @@ function trigger($channels, $event, $data)
     // } else {
     //     return false;
     // }
+}
+
+function b64todata(b64)
+{
+    var body = new Buffer(b64, 'base64').toString('ascii');
+    return body;
+}
+
+function tob64(data)
+{
+    var b64 = new Buffer(data).toString('base64')
+    return b64;
 }
 
 
@@ -521,9 +538,19 @@ $options['encrypted'] = true;
 
 
 // Final go
-var $data = {};
-$data['message'] = 'hello world';
-trigger('test_channel', 'my_event', $data);
+//var $data = {data:{message:'hello world'},name:'my-event', channel:'my-channel'};
+var $data = {name:'my-event', data:"{\"message\":\"hello world\"}", channels:['my-channel']};
+// $data['message'] = 'hello world';
+// var $body = JSON.stringify($data);
+// var bodymd5 = md5($body);
+// console.log('body md5:' + bodymd5);
+// console.log('body b64:' + tob64($body));
+//console.log(b64todata(tob64('hello world')));
+//console.log(md5(b64todata('eyJuYW1lIjoibXktZXZlbnQiLCJkYXRhIjoie1wibWVzc2FnZVwiOlwiaGVsbG8gd29ybGRcIn0iLCJjaGFubmVscyI6WyJteS1jaGFubmVsIl19')));
+// console.log(new Buffer($body).toString('base64'));
+trigger('my-channel', 'my-event', $data);
+
+
 
 
 

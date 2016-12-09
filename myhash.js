@@ -274,8 +274,8 @@
                 this.outer.finish(out);
             }
             else {
-                this.inner.finish(out);
-                this.outer.update(out, this.digestLength).finish(out);
+               this.inner.finish(out);
+               this.outer.update(out, this.digestLength).finish(out);
             }
             return this;
         };
@@ -396,6 +396,19 @@ function array_implode($glue, $separator, $array)
 
 }
 
+function myhmac(str,secret)
+{
+ x = new HMAC(secret);
+ x.update(str);
+ var dig = x.digest();
+ // console.log(dig);
+ // x.digest();
+ x.clean();
+ return dig;
+}
+
+
+
 
 function epoc()
 {
@@ -404,36 +417,119 @@ function epoc()
 }
 
 function build_auth_query_string($auth_key, $auth_secret, $request_method, $request_path)
-    {
-        $query_params = array();
-        $auth_version = '1.0';
-        $params = array();
-        $params['auth_key'] = $auth_key;
-        $params['auth_timestamp'] = epoc();
-        $params['auth_version'] = $auth_version;
+{
+    $query_params = array();
+    $auth_version = '1.0';
+    $params = array();
+    $params['auth_key'] = $auth_key;
+    $params['auth_timestamp'] = epoc();
+    $params['auth_version'] = $auth_version;
 
-        $params = array_merge($params, $query_params);
-        ksort($params);
+    $params = array_merge($params, $query_params);
+    ksort($params);
 
-        $string_to_sign = "$request_method\n"+$request_path+"\n"+array_implode('=', '&', $params);
+    $string_to_sign = "$request_method\n"+$request_path+"\n"+array_implode('=', '&', $params);
 
-        $auth_signature = hash_hmac('sha256', $string_to_sign, $auth_secret, false);
-    
-        $params['auth_signature'] = $auth_signature;
-        ksort($params);
+    $auth_signature = hash_hmac('sha256', $string_to_sign, $auth_secret, false);
 
-        $auth_query_string = array_implode('=', '&', $params);
+    $params['auth_signature'] = $auth_signature;
+    ksort($params);
 
-        return $auth_query_string;
+    $auth_query_string = array_implode('=', '&', $params);
+
+    return $auth_query_string;
+}
+
+
+function trigger($channels, $event, $data)
+{
+    $socket_id = null;
+    $debug = false;
+    $already_encoded = false;
+
+
+    if (typeof $channels == 'string') {
+        //$this->log('->trigger received string channel "'.$channels.'". Converting to array.');
+        $channels = Array($channels);
     }
+
+    $query_params = Array();
+
+    $s_url = settings['base_path']+'/events';
+
+    $data_encoded = $already_encoded ? $data : JSON.stringify($data);
+
+    // json_encode might return false on failure
+    if (!$data_encoded) {
+        console.log('Failed to perform json_encode on the the provided data: '+$data);
+    }
+
+    $post_params = Array();
+    $post_params['name'] = $event;
+    $post_params['data'] = $data_encoded;
+    $post_params['channels'] = $channels;
+
+    // if ($socket_id !== null) {
+    //     $post_params['socket_id'] = $socket_id;
+    // }
+
+    $post_value = JSON.stringify($post_params);
+// print $post_value."\n\n\n";
+
+    $query_params['body_md5'] = md5($post_value);
+
+    console.log("got md5 of: " + $query_params['body_md5']);
+
+    // $ch = $this->create_curl($this->ddn_domain(), $s_url, 'POST', $query_params);
+
+    // $this->log('trigger POST: '.$post_value);
+
+    // curl_setopt($ch, CURLOPT_POSTFIELDS, $post_value);
+
+    // $response = $this->exec_curl($ch);
+
+    // if ($response['status'] === 200 && $debug === false) {
+    //     return true;
+    // } elseif ($debug === true || $this->settings['debug'] === true) {
+    //     return $response;
+    // } else {
+    //     return false;
+    // }
+}
+
+
 //////////////
 
 
+////// AUTH //////
+$auth_key = "";
+$secret = "";
+$app_id = "";
+////// AUTH //////
+
+settings = {};
+
+settings['auth_key'] = $auth_key;
+settings['secret'] = $secret;
+settings['app_id'] = $app_id;
+settings['base_path'] = '/apps/'+settings['app_id'];
 
 
-var query_params = {};
-var post_params = {'a':'b'}
-var post_value = JSON.stringify(query_params); //JSON.encode(post_params);
+// Options for Pusher module itself
+$options = {};
+$options['encrypted'] = true;
+
+
+// Final go
+var $data = {};
+$data['message'] = 'hello world';
+trigger('test_channel', 'my_event', $data);
+
+
+
+// var query_params = {};
+// var post_params = {'a':'b'}
+// var post_value = JSON.stringify(query_params); //JSON.encode(post_params);
 // $post_value = json_encode($post_params);
 
 // query_params['body_md5'] = md5(post_value);
@@ -442,14 +538,13 @@ var post_value = JSON.stringify(query_params); //JSON.encode(post_params);
 
 // console.log(exports);
 // exports.HMAC-SHA256("d", "3");
- x = new HMAC("secret");
- x.update("body");
- var dig = x.digest();
- console.log(dig);
- x.digest();
- x.clean();
+ // x = new HMAC("secret");
+ // x.update("body");
+ // var dig = x.digest();
+ // console.log(dig);
+ // x.digest();
+ // x.clean();
 
-var epoc_seconds = Math.floor(((new Date).getTime())/1000);
 
 
  // var h = (new HMAC(key)).update(data);

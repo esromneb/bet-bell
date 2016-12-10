@@ -332,13 +332,25 @@ function trigger($channels, $event, $data)
     $final_url = create_url(ddn_domain(), $s_url, 'POST', $query_params);
 
 
+    var callback = function (error, response, body) {
+        console.log(response);
+      if (!error && response.statusCode == 200) {
+        console.log(body.id) // Print the shortened url.
+      }
+    };
 
-
-    
-    
-
-
-
+    var request = require('request');
+    request(
+    {
+        url: $final_url,
+        method: "POST",
+        // json: true,
+        headers: {
+            "content-type": "application/json",
+        },
+        body: $data_encoded
+    },
+    callback);
 
 
 
@@ -399,9 +411,12 @@ $options = {};
 $options['encrypted'] = true;
 
 
+// actual custom data
+var inner_data = {"message":"hello world"};
+
 // Final go
 //var $data = {data:{message:'hello world'},name:'my-event', channel:'my-channel'};
-var $data = {name:'my-event', data:"{\"message\":\"hello world\"}", channels:['my-channel']};
+var $data = {name:'my-event', data:JSON.stringify(inner_data), channels:['my-channel']};
 // $data['message'] = 'hello world';
 // var $body = JSON.stringify($data);
 // var bodymd5 = md5($body);

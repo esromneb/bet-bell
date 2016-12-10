@@ -406,19 +406,65 @@ settings['app_id'] = $app_id;
 settings['base_path'] = '/apps/'+settings['app_id'];
 
 
-// Options for Pusher module itself
-$options = {};
-$options['encrypted'] = true;
+function roast_and_go(payload)
+{
+    // Final go
+    var $data = {name:'my-event', data:JSON.stringify(payload), channels:['my-channel']};
+
+    trigger('my-channel', 'my-event', $data);
+}
+
+
+function handle_hook(params)
+{
+    var res = ' ';
+    
+    var text = "lunch"; // default value
+    if (params['text'] && params['text'].length > 0)
+    {
+        text = params['text'];
+    }
+
+    switch(text)
+    {
+        default:
+        case '1':
+        case 'lunch':
+            res = "Ringing Short Bell...";
+        break;
+        case '2':
+        case 'long':
+            res = 'Ringing Long Bell...';
+            break;
+        case '3':
+        case 'morse':
+        res = "Ringing 3..."
+        break;
+        case 'help':
+            res = help_menu;
+        break;
+    }
+
+    return res;
+}
+
+var help_menu = "\n\n--Use the /bell command alone to ring a short bell. \nYou can also use /bell with a number.\n\n\n  1: short bell\n\n  2: long bell\n\n  3: wat?\n\n  help: this message, duh\n";
+
+/// Tests etc ///
+
+
+var outp = handle_hook(t1);
+
 
 
 // actual custom data
 var payload = {"bell":0};
 
-// Final go
-var $data = {name:'my-event', data:JSON.stringify(payload), channels:['my-channel']};
+//roast_and_go(payload);
 
 
 
-trigger('my-channel', 'my-event', $data);
 
- 
+
+
+

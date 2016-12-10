@@ -228,7 +228,7 @@ function build_auth_query_string($auth_key, $auth_secret, $request_method, $requ
     $implode = dry_implode($params);
 
     // console.log('fn implode'+dry_implode($params));
-    console.log('implode'+$implode);
+    // console.log('implode'+$implode);
 
     // console.log(JSON.stringify($params));
     // console.log(JSON.stringify($query_params));
@@ -241,8 +241,8 @@ function build_auth_query_string($auth_key, $auth_secret, $request_method, $requ
 
     $string_to_sign = $request_method+"\n"+$request_path+"\n"+$implode;
 
-    console.log('string_to_sign'+$string_to_sign+'\n\n');
-    console.log('signing:'+tob64($string_to_sign));
+    // console.log('string_to_sign'+$string_to_sign+'\n\n');
+    // console.log('signing:'+tob64($string_to_sign));
 
     //$auth_signature = hash_hmac('sha256', $string_to_sign, $auth_secret, false);
     // $auth_signature = myhmac($string_to_sign, $auth_secret);
@@ -257,7 +257,7 @@ function build_auth_query_string($auth_key, $auth_secret, $request_method, $requ
     $params2['auth_version'] = $params['auth_version'];
     $params2['body_md5'] = $params['body_md5'];
 
-    console.log(JSON.stringify($params2));
+    // console.log(JSON.stringify($params2));
 
     $auth_query_string = dry_implode($params2);
 
@@ -333,10 +333,10 @@ function trigger($channels, $event, $data)
 
 
     var callback = function (error, response, body) {
-        console.log(response);
-      if (!error && response.statusCode == 200) {
-        console.log(body.id) // Print the shortened url.
-      }
+      //   console.log(response);
+      // if (!error && response.statusCode == 200) {
+      //   console.log(body.id) // Print the shortened url.
+      // }
     };
 
     var request = require('request');
@@ -412,45 +412,13 @@ $options['encrypted'] = true;
 
 
 // actual custom data
-var inner_data = {"message":"hello world"};
+var payload = {"bell":0};
 
 // Final go
-//var $data = {data:{message:'hello world'},name:'my-event', channel:'my-channel'};
-var $data = {name:'my-event', data:JSON.stringify(inner_data), channels:['my-channel']};
-// $data['message'] = 'hello world';
-// var $body = JSON.stringify($data);
-// var bodymd5 = md5($body);
-// console.log('body md5:' + bodymd5);
-// console.log('body b64:' + tob64($body));
-//console.log(b64todata(tob64('hello world')));
-//console.log(md5(b64todata('eyJuYW1lIjoibXktZXZlbnQiLCJkYXRhIjoie1wibWVzc2FnZVwiOlwiaGVsbG8gd29ybGRcIn0iLCJjaGFubmVscyI6WyJteS1jaGFubmVsIl19')));
-// console.log(new Buffer($body).toString('base64'));
+var $data = {name:'my-event', data:JSON.stringify(payload), channels:['my-channel']};
+
+
 
 trigger('my-channel', 'my-event', $data);
-
-
-// var hash = CryptoJS.HmacSHA256("a", "secret");
-// console.log(""+hash);
-
-
-
-// for(i = 0; i < 14; i++)
-// {
-//     console.log(mmy[""+i].toString(16));
-// // console.log(String.fromCharCode(mmy[""+i]));    
-// }
-//console.log(String.fromCharCode(102));
-
-
-
-
-// var query_params = {};
-// var post_params = {'a':'b'}
-// var post_value = JSON.stringify(query_params); //JSON.encode(post_params);
-// $post_value = json_encode($post_params);
-
-// query_params['body_md5'] = md5(post_value);
-
-// console.log(query_params['body_md5']);
 
  

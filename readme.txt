@@ -25,3 +25,10 @@ python client_example.py  loads and waits with websocket and is notified
 myhash.js-
 load 2 libraries at the top
 then write a fn that takes a body, and does a POST to a url with params
+
+
+
+#############
+http://www.freeformatter.com/hmac-generator.html#ad-output
+https://javascript-minifier.com/
+

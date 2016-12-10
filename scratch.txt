@@ -1,0 +1,23 @@
+################ ###############
+#############       ############
+############ BetBell ###########
+############         ###########
+#############       ############
+################ ###############
+################################
+
+\n
+\n
+--
+Use the /bell command alone to ring a short bell. \n
+You can also use /bell with a number.\n
+\n
+\n
+  1: short bell\n
+\n
+  2: long bell\n
+\n
+  3: wat?\n
+\n
+  help: this message, duh\n
+  

@@ -397,12 +397,18 @@ class Pusher
 
         $string_to_sign = "$request_method\n".$request_path."\n".self::array_implode('=', '&', $params);
 
+        print "signing:\n".base64_encode($string_to_sign)."\n\n";
+
         $auth_signature = hash_hmac('sha256', $string_to_sign, $auth_secret, false);
 	
         $params['auth_signature'] = $auth_signature;
         ksort($params);
 
         $auth_query_string = self::array_implode('=', '&', $params);
+
+        print "final auth str:\n".$auth_signature."\n";
+
+        print "my auth:\n".hash_hmac('sha256', 'a', 'secret', false)."\n";
 
         return $auth_query_string;
     }
@@ -480,9 +486,14 @@ class Pusher
         }
 
         $post_value = json_encode($post_params);
-//print $post_value."\n\n\n";
+        print "Post value:";
+print base64_encode($post_value)."\n\n\n";
+        
 
         $query_params['body_md5'] = md5($post_value);
+        print "md5:\n\n".$query_params['body_md5']."\n\n";
+        print "ddn_domain:".$this->ddn_domain()."\n\n";
+        print "s_url:$s_url\n\n";
 
         $ch = $this->create_curl($this->ddn_domain(), $s_url, 'POST', $query_params);
 
@@ -692,6 +703,7 @@ class Pusher
         $data['interests'] = $interests;
 
         $post_value = json_encode($data);
+        print $post_value."\n\n";
 
         $query_params['body_md5'] = md5($post_value);
 
